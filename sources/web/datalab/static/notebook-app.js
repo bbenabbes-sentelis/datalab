@@ -546,10 +546,6 @@ define(['appbar', 'minitoolbar', 'idle-timeout', 'util'], function(appbar, minit
       Jupyter.notebook.restore_checkpoint();
     })
 
-    $('#downloadButton').click(function() {
-      navigateAlternate('/files', /* download */ true);
-    })
-
     $('#convertHTMLButton').click(function() {
       var event = {
         'event': 'concordEvent',

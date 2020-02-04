@@ -25,11 +25,6 @@ define(() => {
       new savewidget.SaveWidget('span#save_widget', { editor: editor, events: events }).rename();
     })
 
-    $('#downloadButton').click(function() {
-      navigateAlternate('/files');
-    })
-  }
-
   return {
     postLoad: postLoad
   };

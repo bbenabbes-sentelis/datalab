@@ -33,15 +33,16 @@ ENV PYTHON_3_ENV py3env
 SHELL ["/bin/bash", "-c"]
 
 # Setup OS and core packages
-RUN echo "deb-src http://ftp.us.debian.org/debian testing main" >> /etc/apt/sources.list && \
+RUN sed -i~orig -e 's/# deb-src/deb-src/' /etc/apt/sources.list && \
     apt-get update -y && \
-    apt-get install -y -q debian-archive-keyring debian-keyring && \
-    apt-get update -y && \
-    apt-get install --no-install-recommends -y -q \
+    apt-get install -y --no-install-recommends -q debian-archive-keyring debian-keyring && \
+    apt-get update -y --no-install-recommends && \
+    apt-get install --no-install-recommends -y --allow-unauthenticated -q \
         build-essential \
         ca-certificates \
         curl \
         git \
+        libpng-dev \
         locales \
         openssh-client \
         pkg-config \
@@ -52,7 +53,7 @@ RUN echo "deb-src http://ftp.us.debian.org/debian testing main" >> /etc/apt/sour
 # Save GPL source packages
     mkdir -p /srcs && \
     cd /srcs && \
-    apt-get source -d wget git python-zmq ca-certificates pkg-config libpng-dev && \
+    apt-get source -d wget git python-zmq ca-certificates pkg-config && \
     cd / && \
 # Set our locale to en_US.UTF-8.
     locale-gen en_US.UTF-8 && \
@@ -94,7 +95,6 @@ RUN echo "deb-src http://ftp.us.debian.org/debian testing main" >> /etc/apt/sour
         plotly==1.12.5 \
         psutil==4.3.0 \
         pygments==2.1.3 \
-        python-dateutil==2.5.0 \
         python-snappy==0.5.1 \
         pytz==2018.4 \
         pyyaml==3.13 \
@@ -103,10 +103,8 @@ RUN echo "deb-src http://ftp.us.debian.org/debian testing main" >> /etc/apt/sour
         scikit-image==0.13.0 \
         scikit-learn==0.19.1 \
         scipy==1.0.0 \
-        seaborn==0.7.0 \
         six==1.11.0 \
         statsmodels==0.8.0 \
-        sympy==0.7.6.1 \
         tornado==4.5.1 \
         widgetsnbextension==3.2.1 \
         xgboost==0.6a2 && \
@@ -120,6 +118,9 @@ RUN echo "deb-src http://ftp.us.debian.org/debian testing main" >> /etc/apt/sour
         google-cloud-monitoring==0.28.0 \
         lime==0.1.1.23 \
         protobuf==3.6.1 \
+        python-dateutil==2.5.0 \
+        seaborn==0.7.0 \
+        sympy==0.7.6.1 \
         tensorflow==1.8.0 && \
     source deactivate && \
 # Clean up before setting up the Python3 env.
@@ -153,7 +154,6 @@ RUN echo "deb-src http://ftp.us.debian.org/debian testing main" >> /etc/apt/sour
         plotly==1.12.5 \
         psutil==4.3.0 \
         pygments==2.1.3 \
-        python-dateutil==2.5.0 \
         python-snappy==0.5.1 \
         pytz==2018.4 \
         pyzmq==17.1.0 \
@@ -161,10 +161,8 @@ RUN echo "deb-src http://ftp.us.debian.org/debian testing main" >> /etc/apt/sour
         scikit-image==0.13.0 \
         scikit-learn==0.19.1 \
         scipy==1.0.0 \
-        seaborn==0.7.0 \
         six==1.11.0 \
         statsmodels==0.8.0 \
-        sympy==0.7.6.1 \
         tornado==4.5.1 \
         widgetsnbextension==3.2.1 \
         xgboost==0.6a2 && \
@@ -232,6 +230,9 @@ RUN source activate $PYTHON_3_ENV && \
         google-cloud-monitoring==0.28.0 \
         lime==0.1.1.23 \
         protobuf==3.6.1 \
+        python-dateutil==2.5.0 \
+        seaborn==0.7.0 \
+        sympy==0.7.6.1 \
         tensorflow==1.8.0
 
 ENV LANG en_US.UTF-8

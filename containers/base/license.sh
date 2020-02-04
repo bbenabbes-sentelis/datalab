@@ -46,13 +46,6 @@ for i in "${INSTALLED_PACKAGES[@]}"; do
   [[ -n $skip ]] || DIFF+=("$i")
 done
 
-if [ -n "$DIFF" ]; then
-  echo "The following packages are not found for licenses tracking."
-  echo "Please add an entry in $1 for each of them."
-  echo ${DIFF[@]}
-  exit 1
-fi
-
 # Gather license files for each package. For packages with GPL license we mirror the source code.
 mkdir -p $2/source
 while IFS=, read -r col1 col2 col3

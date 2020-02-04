@@ -292,15 +292,6 @@ i.material-icons {
 .list_placeholder {
   font-weight: normal;
 }
-.alternate_upload input.fileinput {
-  visibility: hidden;
-  height: 40px;
-}
-#uploadButton {
-  height: 28px;
-  padding: 4px 8px;
-  margin: 0;
-}
 #editorButton {
   display: none;
 }

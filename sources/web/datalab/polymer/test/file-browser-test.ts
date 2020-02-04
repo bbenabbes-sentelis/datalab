@@ -30,7 +30,6 @@ window.addEventListener('WebComponentsReady', () => {
       'newNotebookButton',
       'newFileButton',
       'newFolderButton',
-      'uploadButton',
     ];
     const singleSelectionEnabledButtonIds = [
       'editAsTextButton',
