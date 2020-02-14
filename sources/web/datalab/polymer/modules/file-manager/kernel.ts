@@ -27,13 +27,6 @@ class KernelManager {
 
   private static _kernelSpecs = new Map<string, KernelSpec> ([
     [
-      KernelType.PYTHON2, {
-        display_name: 'Python 2',
-        language: 'python',
-        name: 'python2',
-      }
-    ],
-    [
       KernelType.PYTHON3, {
         display_name: 'Python 3',
         language: 'python',

@@ -29,7 +29,7 @@
     "--ContentsManager.untitled_notebook=\"Untitled Notebook\"",
     "--NotebookNotary.algorithm=\"sha1\"",
     "--KernelManager.autorestart=True",
-    "--MultiKernelManager.default_kernel_name=\"python2\"",
+    "--MultiKernelManager.default_kernel_name=\"python3\"",
     "--ip=\"127.0.0.1\""
   ],
   "knownTutorialsUrl": "https://storage.googleapis.com/cloud-datalab/deploy/sample_notebooks.js",

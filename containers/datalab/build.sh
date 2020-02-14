@@ -39,7 +39,7 @@ rm -rf $BUILD_DIR
 ${HERE}/prepare.sh "datalab-base"
 
 # Build the docker image
-docker build ${DOCKER_BUILD_ARGS} -t datalab .
+docker build ${DOCKER_BUILD_ARGS} -t gcr.io/bank-datalab/datalab-base:latest .
 
 # Finally cleanup
 ${HERE}/cleanup.sh
