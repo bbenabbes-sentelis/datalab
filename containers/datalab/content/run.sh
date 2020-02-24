@@ -46,7 +46,6 @@ if [ -n "${GATEWAY_VM}" ] || [ -n "${EXPERIMENTAL_KERNEL_GATEWAY_URL}" ] || [ -n
   exit "${ERR_UNSUPPORTED_GATEWAY_OPTION}"
 fi
 
-PYTHON2_ENV='py2env'
 PYTHON3_ENV='py3env'
 
 check_tmp_directory() {
@@ -64,11 +63,6 @@ check_tmp_directory() {
 function reinstall_pydatalab() {
   PYDATALAB=/content/pydatalab
   echo "Reinstalling pydatalab from ${PYDATALAB}"
-  source deactivate
-  source activate ${PYTHON2_ENV}
-  pip install --upgrade --no-deps --force-reinstall --no-cache-dir ${PYDATALAB}
-  pip install --upgrade --no-deps --force-reinstall ${PYDATALAB}/solutionbox/image_classification/.
-  pip install --upgrade --no-deps --force-reinstall ${PYDATALAB}/solutionbox/structured_data/.
   source deactivate
   source activate ${PYTHON3_ENV}
   pip install --upgrade --no-deps --force-reinstall --no-cache-dir ${PYDATALAB}

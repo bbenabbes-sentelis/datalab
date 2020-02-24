@@ -13,7 +13,6 @@
  */
 
 enum KernelType {
-  PYTHON2 = 'python2',
   PYTHON3 = 'python3',
 }
 

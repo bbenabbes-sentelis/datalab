@@ -26,7 +26,6 @@ EXPOSE 8080
 ENV DATALAB_CONDA_DIR /usr/local
 ENV PATH $PATH:/tools/node/bin:/tools/google-cloud-sdk/bin:$DATALAB_CONDA_DIR/bin
 
-ENV PYTHON_2_ENV py2env
 ENV PYTHON_3_ENV py3env
 
 # Needed to run "source" for switching Conda environments.
@@ -68,61 +67,6 @@ RUN sed -i~orig -e 's/# deb-src/deb-src/' /etc/apt/sources.list && \
     conda config --system --append channels conda-forge && \
     conda config --system --set show_channel_urls true && \
     conda update --all --quiet --yes && \
-    conda create --yes --quiet --name $PYTHON_2_ENV python=2.7 \
-        crcmod==1.7 \
-        dask==0.17.1 \
-        dill==0.2.6 \
-        future==0.16.0 \
-        futures==3.2.0 \
-        google-api-python-client==1.6.2 \
-        httplib2==0.10.3 \
-        h5py==2.7.1 \
-        ipykernel==4.8.2 \
-        ipywidgets==7.2.1 \
-        jinja2==2.8 \
-        jsonschema==2.6.0 \
-        matplotlib==2.1.2 \
-        mock==2.0.0 \
-        nltk==3.2.1 \
-        numpy==1.14.0 \
-        oauth2client==2.2.0 \
-        pandas-gbq==0.3.0 \
-        pandas==0.22.0 \
-        pandas-profiling==1.4.2 \
-        pandocfilters==1.4.2 \
-        pillow==5.0.0 \
-        pip==18.1 \
-        plotly==1.12.5 \
-        psutil==4.3.0 \
-        pygments==2.1.3 \
-        python-snappy==0.5.1 \
-        pytz==2018.4 \
-        pyyaml==3.13 \
-        pyzmq==17.1.0 \
-        requests==2.18.4 \
-        scikit-image==0.13.0 \
-        scikit-learn==0.19.1 \
-        scipy==1.0.0 \
-        six==1.11.0 \
-        statsmodels==0.8.0 \
-        tornado==4.5.1 \
-        widgetsnbextension==3.2.1 \
-        xgboost==0.6a2 && \
-# Install Python2 packages that aren't available or up-to-date in Conda.
-    source activate $PYTHON_2_ENV && \
-    pip install --quiet -U --upgrade-strategy only-if-needed --no-cache-dir \
-        apache-airflow==1.9.0 \
-        bs4==0.0.1 \
-        ggplot==0.6.8 \
-        google-cloud-dataflow==2.0.0 \
-        google-cloud-monitoring==0.28.0 \
-        lime==0.1.1.23 \
-        protobuf==3.6.1 \
-        python-dateutil==2.5.0 \
-        seaborn==0.7.0 \
-        sympy==0.7.6.1 \
-        tensorflow==1.8.0 && \
-    source deactivate && \
 # Clean up before setting up the Python3 env.
     conda clean -tipsy && \
 # This var needs to be unset before installing the Python3 Conda env to
@@ -130,49 +74,10 @@ RUN sed -i~orig -e 's/# deb-src/deb-src/' /etc/apt/sources.list && \
     unset OLDPWD && \
 # Set up Python 3.5 Conda env and install packages.
     conda create --yes --quiet --name $PYTHON_3_ENV python=3.5 \
-        crcmod==1.7 \
-        dask==0.17.1 \
-        dill==0.2.6 \
-        google-api-python-client==1.6.2 \
-        httplib2==0.10.3 \
-        h5py==2.7.1 \
-        ipykernel==4.8.2 \
-        ipywidgets==7.2.1 \
-        jinja2==2.8 \
-        jsonschema==2.6.0 \
-        matplotlib==2.1.2 \
-        mock==2.0.0 \
-        nltk==3.2.1 \
-        notebook==5.6.0 \
-        numpy==1.14.0 \
-        oauth2client==2.2.0 \
-        pandas-gbq==0.3.0 \
-        pandas==0.22.0 \
-        pandocfilters==1.4.2 \
-        pillow==5.0.0 \
-        pip==18.0 \
-        plotly==1.12.5 \
-        psutil==4.3.0 \
-        pygments==2.1.3 \
-        python-snappy==0.5.1 \
-        pytz==2018.4 \
-        pyzmq==17.1.0 \
-        requests==2.18.4 \
-        scikit-image==0.13.0 \
-        scikit-learn==0.19.1 \
-        scipy==1.0.0 \
-        six==1.11.0 \
-        statsmodels==0.8.0 \
-        tornado==4.5.1 \
         widgetsnbextension==3.2.1 \
-        xgboost==0.6a2 && \
+        pip==18.0 && \
 # Make pip3 a copy of pip for the Python 3 environment.
     cp /usr/local/envs/py3env/bin/pip /usr/local/envs/py3env/bin/pip3 && \
-    source deactivate && \
-    # Install Python2 IPython kernel within the Python3 Jupyter directory since
-    # we will be running Jupyter from the Python3 conda env.
-    source activate $PYTHON_2_ENV && \
-    python -m ipykernel install --prefix=/usr/local/envs/py3env && \
     source deactivate && \
 # Clean up Python packages
     conda clean -tipsy && \
@@ -220,21 +125,6 @@ RUN sed -i~orig -e 's/# deb-src/deb-src/' /etc/apt/sources.list && \
     rm -rf /usr/share/locale/* && \
     rm -rf /usr/share/i18n/locales/*
 
-# Install Python3 packages that aren't available or up-to-date in Conda.
-# For some reasons, merging it with the commands above does not work so creating a separate one.
-RUN source activate $PYTHON_3_ENV && \
-    pip install --quiet -U --upgrade-strategy only-if-needed --no-cache-dir \
-        apache-airflow==1.9.0 \
-        bs4==0.0.1 \
-        ggplot==0.6.8 \
-        google-cloud-monitoring==0.28.0 \
-        lime==0.1.1.23 \
-        protobuf==3.6.1 \
-        python-dateutil==2.5.0 \
-        seaborn==0.7.0 \
-        sympy==0.7.6.1 \
-        tensorflow==1.8.0
-
 ENV LANG en_US.UTF-8
 
 # Copy local configuration files
@@ -256,12 +146,6 @@ RUN if [ -d /datalab/lib/pydatalab/.git ]; then \
     tsc --module amd --noImplicitAny --outdir google/datalab/notebook/static google/datalab/notebook/static/*.ts && \
     /tools/node/bin/npm uninstall -g typescript && \
     cd /datalab/lib/pydatalab && \
-# Install Python2 pydatalab packages
-    source activate $PYTHON_2_ENV && \
-    pip install --upgrade-strategy only-if-needed --no-cache-dir . && \
-    pip install --upgrade-strategy only-if-needed /datalab/lib/pydatalab/solutionbox/image_classification/. && \
-    pip install --upgrade-strategy only-if-needed /datalab/lib/pydatalab/solutionbox/structured_data/. && \
-    source deactivate && \
 # Install Python3 pydatalab packages and Jupyter extensions. The Datalab web app
 # will also be started from the Python3 env.
     source activate $PYTHON_3_ENV && \
@@ -282,17 +166,7 @@ RUN if [ -d /datalab/lib/pydatalab/.git ]; then \
     cp -R /usr/local/share/jupyter/nbextensions/gcpdatalab/* /datalab/nbconvert && \
     ln -s $DATALAB_CONDA_DIR/envs/$PYTHON_3_ENV/lib/python3.5/site-packages/notebook/static/custom/custom.css /datalab/nbconvert/custom.css
 
-# Add third party license files
-RUN mkdir -p /tools/license
-COPY license.sh /tools/license
-COPY third_party_licenses.csv /tools/license
-RUN mkdir /usr/licenses && \
-    /tools/license/license.sh /tools/license/third_party_licenses.csv /usr/licenses
-
-COPY config/py2-kernel.json $DATALAB_CONDA_DIR/envs/$PYTHON_3_ENV/share/jupyter/kernels/python2/kernel.json
 COPY config/py3-kernel.json $DATALAB_CONDA_DIR/envs/$PYTHON_3_ENV/share/jupyter/kernels/python3/kernel.json
-COPY config/py2-kernel-startup.sh $DATALAB_CONDA_DIR/envs/$PYTHON_3_ENV/share/jupyter/kernels/python2/kernel-startup.sh
 COPY config/py3-kernel-startup.sh $DATALAB_CONDA_DIR/envs/$PYTHON_3_ENV/share/jupyter/kernels/python3/kernel-startup.sh
 
-RUN chmod 755 $DATALAB_CONDA_DIR/envs/$PYTHON_3_ENV/share/jupyter/kernels/python2/kernel-startup.sh && \
-    chmod 755 $DATALAB_CONDA_DIR/envs/$PYTHON_3_ENV/share/jupyter/kernels/python3/kernel-startup.sh
+RUN chmod 755 $DATALAB_CONDA_DIR/envs/$PYTHON_3_ENV/share/jupyter/kernels/python3/kernel-startup.sh
